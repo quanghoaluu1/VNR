@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base ─────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #FAF9F6;
+  color: #2C2416;
+  font-family: 'Lora', Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Paper Texture ─────────────────────────────────────── */
+.paper-bg {
+  position: relative;
+  background-color: #FAF9F6;
+}
+
+.paper-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 28px,
+      rgba(120, 60, 0, 0.025) 28px,
+      rgba(120, 60, 0, 0.025) 29px
+    );
+}
+
+/* ─── Decorative Rule ──────────────────────────────────── */
+.rule-red {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rule-red::before,
+.rule-red::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #991b1b;
+  opacity: 0.6;
+}
+
+/* ─── Map container ─────────────────────────────────────── */
+.map-wrapper svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Marker pulse ring (SVG) ───────────────────────────── */
+.pulse-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulseRing 2s ease-out infinite;
+}
+
+@keyframes pulseRing {
+  0%   { transform: scale(1); opacity: 0.75; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+
+/* ─── Scroll column ─────────────────────────────────────── */
+.scroll-col {
+  scrollbar-width: thin;
+  scrollbar-color: #991b1b #f2ecd8;
+}
+
+.scroll-col::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scroll-col::-webkit-scrollbar-track {
+  background: #f2ecd8;
+}
+
+.scroll-col::-webkit-scrollbar-thumb {
+  background: #991b1b;
+  border-radius: 2px;
+}
+
+/* ─── Stagger helpers ───────────────────────────────────── */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-700 { animation-delay: 0.7s; }
+.delay-900 { animation-delay: 0.9s; }
+.delay-1100 { animation-delay: 1.1s; }
+
+/* Start invisible for animated elements */
+.animate-fade-up,
+.animate-fade-in {
+  opacity: 0;
+}
+
+/* ─── Card hover ────────────────────────────────────────── */
+.event-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.event-card:hover {
+  transform: translateX(4px);
+}
+
+/* ─── Geography transitions ─────────────────────────────── */
+.rsm-geography {
+  transition: fill 0.3s ease;
+  outline: none;
+}
+
+/* ─── Detail panel slide-up animation ──────────────────── */
+/*
+ * The detail panel slides up from the map bottom when a location is selected.
+ * `key={location.id}` on the React element ensures the animation re-runs
+ * every time a different location is chosen.
+ */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.detail-slide-up {
+  animation: slideUp 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* ─── Popup entrance animation ──────────────────────────── */
+/*
+ * The popup fades in from slightly below with a gentle overshoot
+ * (cubic-bezier with bounce) so it feels tactile without being distracting.
+ */
+@keyframes popupAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.93) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.popup-appear {
+  animation: popupAppear 0.24s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  transform-origin: bottom left; /* grows from the pointer-triangle corner */
+}
