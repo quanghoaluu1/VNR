@@ -558,7 +558,7 @@ export default function InteractiveMapSection() {
       </div>
 
       {/* ── Layout ────────────────────────────────────────── */}
-      <div className="flex flex-col lg:flex-row" style={{ minHeight: '100vh' }}>
+      <div className="flex flex-col lg:flex-row mx-4 md:mx-8 lg:mx-12 rounded-sm overflow-hidden" style={{ minHeight: '100vh' }}>
 
         {/* ══ LEFT: Milestone Timeline ══════════════════════ */}
         <div className="w-full lg:w-[34%] lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto scroll-col border-r border-red-800/10">
