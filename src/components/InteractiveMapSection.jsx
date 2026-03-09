@@ -37,7 +37,7 @@ const locations = [
      */
     zoom: 4,
     image_placeholder_url:
-      'https://placehold.co/320x200/7A1921/FAF9F6?text=Ba+Dinh+Square+1945',
+      '/ba_dinh.jpg',
     image_label: 'Quảng trường Ba Đình, Hà Nội',
     short_description:
       'Ngày 2/9/1945, Chủ tịch Hồ Chí Minh đọc Tuyên ngôn Độc lập tại Quảng trường Ba Đình, khai sinh nước Việt Nam Dân chủ Cộng hòa.',
@@ -52,7 +52,7 @@ const locations = [
     coordinates: [106.68, 20.86],
     zoom: 4,
     image_placeholder_url:
-      'https://placehold.co/320x200/5C2D0E/FAF9F6?text=Hai+Phong+Port+1946',
+      '/loi_keu_goi.jpg',
     image_label: 'Cảng Hải Phòng, 1946',
     short_description:
       'Tháng 11/1946, Pháp gây thảm sát tại Hải Phòng, châm ngòi cho Lời kêu gọi Toàn quốc Kháng chiến ngày 19/12/1946.',
@@ -67,7 +67,7 @@ const locations = [
     coordinates: [105.84, 21.59],
     zoom: 4,
     image_placeholder_url:
-      'https://placehold.co/320x200/2D4A1E/FAF9F6?text=Viet+Bac+Jungle+1947',
+      'viet_bac.jpg',
     image_label: 'Chiến khu Việt Bắc, 1947',
     short_description:
       'Chiến khu Việt Bắc là trung tâm đầu não kháng chiến. Quân dân ta đã đập tan cuộc tấn công Thu-Đông 1947 của Pháp.',
@@ -82,7 +82,7 @@ const locations = [
     coordinates: [103.01, 21.39],
     zoom: 4,
     image_placeholder_url:
-      'https://placehold.co/320x200/1A1A4A/FAF9F6?text=Dien+Bien+Phu+1954',
+      '/dien_bien_phu.jpg',
     image_label: 'Tập đoàn cứ điểm Điện Biên Phủ, 1954',
     short_description:
       'Sau 56 ngày đêm chiến đấu (13/3–7/5/1954), quân ta toàn thắng tại Điện Biên Phủ, buộc Pháp ký Hiệp định Genève.',
@@ -175,12 +175,7 @@ function TimelineCard({ location, isActive, onClick }) {
   )
 }
 
-// ─── Detail Panel (overlays bottom of the map column) ──────────────────────
-/**
- * POSITIONING: absolute bottom-0 within the right column (position:relative).
- * Slides up via the `.detail-slide-up` CSS animation (defined in index.css).
- * Contains a fixed-width image pane on the left and a scrollable text pane.
- */
+// ─── Detail Panel (right column) ────────────────────────────────────────────
 function DetailPanel({ location, onClose }) {
   const badgeClass =
     BADGE_COLORS[location.badge] ??
@@ -188,51 +183,45 @@ function DetailPanel({ location, onClose }) {
 
   return (
     <div
-      key={location.id}                /* re-mounts + re-animates on location change */
-      className="detail-slide-up absolute bottom-0 left-0 right-0 z-20 flex bg-stone-50 border-t-2 border-red-800"
-      style={{
-        maxHeight: '45%',
-        boxShadow: '0 -8px 40px rgba(0,0,0,0.22)',
-      }}
+      key={location.id}
+      className="detail-slide-up flex flex-col h-full bg-stone-50"
     >
       {/* ── Historical image ──────────────────────────────── */}
-      <div className="relative w-28 sm:w-36 md:w-44 flex-shrink-0 overflow-hidden bg-stone-800">
+      <div className="relative flex-shrink-0 overflow-hidden bg-stone-800" style={{ height: '38%' }}>
         <img
           src={location.image_placeholder_url}
           alt={`${location.title} — ${location.year}`}
           className="absolute inset-0 w-full h-full object-cover"
           onError={(e) => {
-            /* Graceful fallback: hide broken img, let gradient show */
             e.currentTarget.style.display = 'none'
             e.currentTarget.parentElement.style.background =
               'linear-gradient(160deg, #7A1921 0%, #2C1810 100%)'
           }}
         />
-        {/* Right-side vignette blends image into the text area */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-stone-50/25 pointer-events-none" />
+        {/* Bottom vignette */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-stone-900/40 pointer-events-none" />
         {/* Year badge */}
-        <span className="absolute bottom-2 left-2 font-body text-[11px] font-bold text-yellow-100 bg-red-900/80 px-1.5 py-0.5 rounded leading-none">
+        <span className="absolute bottom-2 left-3 font-body text-[11px] font-bold text-yellow-100 bg-red-900/80 px-1.5 py-0.5 rounded leading-none">
           {location.year}
         </span>
-      </div>
-
-      {/* ── Text content ──────────────────────────────────── */}
-      <div className="relative flex-1 overflow-y-auto scroll-col px-4 py-4 sm:px-5 sm:py-5">
-        {/* Close / deselect button */}
+        {/* Close button */}
         <button
           onClick={onClose}
           aria-label="Đóng chi tiết"
-          className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center rounded-full bg-red-900/10 hover:bg-red-900/20 text-red-900 text-sm font-bold leading-none transition-colors focus:outline-none focus:ring-1 focus:ring-red-600"
+          className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white text-sm font-bold leading-none transition-colors focus:outline-none focus:ring-1 focus:ring-red-400"
         >
           ×
         </button>
+      </div>
 
+      {/* ── Text content ──────────────────────────────────── */}
+      <div className="flex-1 overflow-y-auto scroll-col px-5 py-5">
         {/* Title + meta */}
-        <div className="pr-8 mb-2">
-          <h3 className="font-display text-lg font-bold text-red-900 leading-tight">
+        <div className="mb-3">
+          <h3 className="font-display text-xl font-bold text-red-900 leading-tight">
             {location.title}
           </h3>
-          <div className="flex items-center gap-2 mt-1 flex-wrap">
+          <div className="flex items-center gap-2 mt-1.5 flex-wrap">
             <p className="font-body text-xs text-yellow-700 font-semibold">
               {location.year}
             </p>
@@ -245,15 +234,15 @@ function DetailPanel({ location, onClose }) {
         </div>
 
         {/* Decorative rule */}
-        <div className="w-8 h-px bg-red-800/30 mb-3" />
+        <div className="w-8 h-px bg-red-800/30 mb-4" />
 
-        {/* Long description — \n\n renders as paragraph break via pre-line */}
+        {/* Long description */}
         <p className="font-body text-xs text-stone-700 leading-relaxed whitespace-pre-line">
           {location.long_description}
         </p>
 
         {/* Image caption */}
-        <p className="font-body text-[10px] text-stone-400 italic mt-3">
+        <p className="font-body text-[10px] text-stone-400 italic mt-4 pb-2">
           {location.image_label}
         </p>
       </div>
@@ -356,16 +345,30 @@ function useMapSpring(targetCenter, targetZoom) {
     return () => { if (anim.rafId) cancelAnimationFrame(anim.rafId) }
   }, [targetCenter[0], targetCenter[1], targetZoom]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  return display
+  // snapTo: teleport animRef to given position so the next spring starts from
+  // there instead of the old target (prevents fighting d3 after user drag).
+  const snapTo = useCallback((cx, cy, z) => {
+    const anim = animRef.current
+    anim.cx = cx; anim.cy = cy; anim.z = z
+    setDisplay({ center: [cx, cy], zoom: z })
+  }, [])
+
+  return { display, snapTo }
 }
 
-function MapView({ activeId, mapCenter, mapZoom, onMarkerClick }) {
+function MapView({ activeId, mapCenter, mapZoom, onMarkerClick, onZoomIn, onZoomOut, onZoomReset, onUserMove }) {
   // Spring-animated center + zoom — drives the map instead of ZoomableGroup's
   // internal CSS transition so we get smooth interruption-safe animation.
-  const { center: displayCenter, zoom: displayZoom } = useMapSpring(mapCenter, mapZoom)
+  const { display: { center: displayCenter, zoom: displayZoom }, snapTo } = useMapSpring(mapCenter, mapZoom)
+
+  const handleMoveEnd = useCallback(({ coordinates, zoom }) => {
+    // Snap animRef first so the spring target == current visual == no re-animation
+    snapTo(coordinates[0], coordinates[1], zoom)
+    onUserMove(coordinates, zoom)
+  }, [snapTo, onUserMove])
 
   return (
-    <div className="w-full h-full" style={{ background: '#EDE3C8' }}>
+    <div className="relative w-full h-full" style={{ background: '#EDE3C8' }}>
       <ComposableMap
         projection="geoMercator"
         projectionConfig={{ center: [106, 17], scale: 1800 }}
@@ -384,7 +387,8 @@ function MapView({ activeId, mapCenter, mapZoom, onMarkerClick }) {
         <ZoomableGroup
           center={displayCenter}
           zoom={displayZoom}
-          filterZoomEvent={() => false}
+          onMoveEnd={handleMoveEnd}
+          filterZoomEvent={(e) => e.type !== 'wheel'}
           transitionDuration={0}
         >
           <Geographies geography={GEO_URL}>
@@ -419,7 +423,7 @@ function MapView({ activeId, mapCenter, mapZoom, onMarkerClick }) {
             const glowR   = (isActive ? 9   : 5)   / displayZoom
             const pulseR  = 10                      / displayZoom
             const strokeW = 1.5                     / displayZoom
-            const textSz  = (isActive ? 8   : 6.5) / displayZoom
+            const textSz  = (isActive ? 16   : 13.5) / displayZoom
             const labelY  = -14                     / displayZoom
 
             return (
@@ -478,6 +482,24 @@ function MapView({ activeId, mapCenter, mapZoom, onMarkerClick }) {
           })}
         </ZoomableGroup>
       </ComposableMap>
+
+      {/* ── Zoom controls ─────────────────────────────────── */}
+      <div className="absolute right-3 top-3 flex flex-col gap-1 z-10">
+        {[
+          { label: '+', title: 'Phóng to', action: onZoomIn },
+          { label: '−', title: 'Thu nhỏ',  action: onZoomOut },
+          { label: '⟳', title: 'Đặt lại',  action: onZoomReset },
+        ].map(({ label, title, action }) => (
+          <button
+            key={label}
+            onClick={action}
+            title={title}
+            className="w-8 h-8 flex items-center justify-center rounded bg-stone-50/90 hover:bg-white border border-stone-300/70 text-stone-700 hover:text-red-900 text-sm font-bold shadow-sm transition-colors focus:outline-none focus:ring-1 focus:ring-red-600"
+          >
+            {label}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
@@ -489,16 +511,34 @@ export default function InteractiveMapSection() {
    * activeId = 1–4   → that location is highlighted; map pans+zooms to it
    *                     and the DetailPanel slides up from the map bottom
    */
-  const [activeId, setActiveId] = useState(null)
+  const [activeId,  setActiveId]  = useState(null)
+  const [mapCenter, setMapCenter] = useState(DEFAULT_CENTER)
+  const [mapZoom,   setMapZoom]   = useState(DEFAULT_ZOOM)
 
-  /** Clicking the same location a second time deselects (returns to overview). */
   const handleSelect = useCallback((id) => {
-    setActiveId((prev) => (prev === id ? null : id))
+    setActiveId((prev) => {
+      const newId = prev === id ? null : id
+      const loc   = locations.find((l) => l.id === newId)
+      setMapCenter(loc?.coordinates ?? DEFAULT_CENTER)
+      setMapZoom(loc?.zoom          ?? DEFAULT_ZOOM)
+      return newId
+    })
   }, [])
 
   const activeLocation = locations.find((l) => l.id === activeId) ?? null
-  const mapCenter      = activeLocation?.coordinates ?? DEFAULT_CENTER
-  const mapZoom        = activeLocation?.zoom        ?? DEFAULT_ZOOM
+
+  const handleZoomIn    = () => setMapZoom((z) => Math.min(10, z * 1.5))
+  const handleZoomOut   = () => setMapZoom((z) => Math.max(0.5, z / 1.5))
+  const handleZoomReset = () => {
+    const loc = locations.find((l) => l.id === activeId)
+    setMapCenter(loc?.coordinates ?? DEFAULT_CENTER)
+    setMapZoom(loc?.zoom          ?? DEFAULT_ZOOM)
+  }
+
+  const handleUserMove = useCallback((center, zoom) => {
+    setMapCenter(center)
+    setMapZoom(zoom)
+  }, [])
 
   return (
     <section id="map-section" className="paper-bg relative">
@@ -517,11 +557,11 @@ export default function InteractiveMapSection() {
         </p>
       </div>
 
-      {/* ── Two-column layout ─────────────────────────────── */}
+      {/* ── Layout ────────────────────────────────────────── */}
       <div className="flex flex-col lg:flex-row" style={{ minHeight: '100vh' }}>
 
         {/* ══ LEFT: Milestone Timeline ══════════════════════ */}
-        <div className="w-full lg:w-[42%] lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto scroll-col border-r border-red-800/10">
+        <div className="w-full lg:w-[34%] lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto scroll-col border-r border-red-800/10">
           <div className="px-6 py-8 md:px-8">
 
             {/* Timeline column header */}
@@ -535,10 +575,6 @@ export default function InteractiveMapSection() {
 
             {/* Timeline */}
             <div className="relative">
-              {/*
-               * Vertical connecting line — sits behind the dots (z-0).
-               * Positioned so it runs through the centre of each dot (left-[0.8125rem]).
-               */}
               <div
                 className="absolute left-[0.8125rem] top-5 bottom-5 w-px bg-red-800/20"
                 aria-hidden="true"
@@ -565,38 +601,26 @@ export default function InteractiveMapSection() {
           </div>
         </div>
 
-        {/* ══ RIGHT: Map + Detail Panel ═════════════════════ */}
-        {/*
-         * overflow-hidden clips the DetailPanel's slide-up animation.
-         * position:relative makes the absolutely-positioned DetailPanel
-         * and the hint badge anchor to this column.
-         */}
+        {/* ══ MIDDLE: Map ═══════════════════════════════════ */}
         <div
-          className="relative w-full lg:w-[58%] lg:sticky lg:top-0 lg:h-screen overflow-hidden"
-          style={{ minHeight: '60vh' }}
+          className="relative w-full lg:sticky lg:top-0 lg:h-screen overflow-hidden transition-all duration-300"
+          style={{
+            minHeight: '60vh',
+            flex: activeLocation ? '0 0 40%' : '1 1 0%',
+          }}
         >
-          {/* Map fills the entire right column */}
           <MapView
             activeId={activeId}
             mapCenter={mapCenter}
             mapZoom={mapZoom}
             onMarkerClick={handleSelect}
+            onZoomIn={handleZoomIn}
+            onZoomOut={handleZoomOut}
+            onZoomReset={handleZoomReset}
+            onUserMove={handleUserMove}
           />
 
-          {/*
-           * Detail panel: slides up from the bottom of the map column.
-           * Keyed on location.id so React unmounts+remounts (and re-runs the
-           * CSS animation) whenever the selected location changes.
-           */}
-          {activeLocation && (
-            <DetailPanel
-              key={activeLocation.id}
-              location={activeLocation}
-              onClose={() => setActiveId(null)}
-            />
-          )}
-
-          {/* Overview hint — visible only when no location is selected */}
+          {/* Overview hint */}
           {!activeLocation && (
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 pointer-events-none">
               <span className="font-body text-[11px] text-stone-500 bg-stone-100/88 px-3 py-1.5 rounded-full border border-stone-200 whitespace-nowrap shadow-sm">
@@ -605,6 +629,17 @@ export default function InteractiveMapSection() {
             </div>
           )}
         </div>
+
+        {/* ══ RIGHT: Detail Panel ════════════════════════════ */}
+        {activeLocation && (
+          <div className="w-full lg:w-[26%] lg:sticky lg:top-0 lg:h-screen overflow-hidden border-l-2 border-red-800/30">
+            <DetailPanel
+              key={activeLocation.id}
+              location={activeLocation}
+              onClose={() => setActiveId(null)}
+            />
+          </div>
+        )}
       </div>
     </section>
   )
