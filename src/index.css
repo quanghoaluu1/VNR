@@ -1,165 +1,477 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Base ─────────────────────────────────────────────── */
-html {
-  scroll-behavior: smooth;
+/* ═══════════════════════════════════════════════════════════
+   CSS CUSTOM PROPERTIES — Design Tokens
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  --gold:       #C9A84C;
+  --gold-light: #E8C97A;
+  --gold-dim:   #8B6914;
+  --crimson:    #8B0000;
+  --crimson-bright: #CC1111;
+  --bg-dark:    #0D0906;
+  --bg-deep:    #110A06;
+  --bg-card:    rgba(20,10,5,0.85);
+  --text-warm:  #E8DCC8;
+  --text-muted: #9A8A72;
+  --glow-gold:  0 0 40px rgba(201,168,76,0.4), 0 0 80px rgba(201,168,76,0.15);
+  --glow-red:   0 0 40px rgba(139,0,0,0.5),   0 0 80px rgba(139,0,0,0.2);
 }
+
+/* ═══════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
 
 body {
-  background-color: #FAF9F6;
-  color: #2C2416;
+  background-color: var(--bg-dark);
+  color: var(--text-warm);
   font-family: 'Lora', Georgia, serif;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* ─── Paper Texture ─────────────────────────────────────── */
-.paper-bg {
-  position: relative;
-  background-color: #FAF9F6;
+::selection {
+  background: rgba(201,168,76,0.3);
+  color: #fff;
 }
 
-.paper-bg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 28px,
-      rgba(120, 60, 0, 0.025) 28px,
-      rgba(120, 60, 0, 0.025) 29px
-    );
+/* ═══════════════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #0D0906; }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+* { scrollbar-width: thin; scrollbar-color: var(--gold-dim) #0D0906; }
+
+/* ═══════════════════════════════════════════════════════════
+   TYPOGRAPHY HELPERS
+   ═══════════════════════════════════════════════════════════ */
+.font-display { font-family: 'Playfair Display', Georgia, serif; }
+.font-body    { font-family: 'Lora', Georgia, serif; }
+.font-ui      { font-family: 'Inter', system-ui, sans-serif; }
+
+/* ═══════════════════════════════════════════════════════════
+   GRADIENT TEXT
+   ═══════════════════════════════════════════════════════════ */
+.text-gradient-gold {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dim) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* ─── Decorative Rule ──────────────────────────────────── */
-.rule-red {
+.text-gradient-fire {
+  background: linear-gradient(135deg, #FDE68A 0%, #F59E0B 40%, var(--crimson) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GLASSMORPHISM CARDS
+   ═══════════════════════════════════════════════════════════ */
+.glass {
+  background: rgba(20, 10, 5, 0.6);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(201,168,76,0.12);
+}
+
+.glass-strong {
+  background: rgba(15, 8, 4, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(201,168,76,0.18);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GLOW EFFECTS
+   ═══════════════════════════════════════════════════════════ */
+.glow-gold { box-shadow: var(--glow-gold); }
+.glow-red  { box-shadow: var(--glow-red); }
+
+.text-glow-gold {
+  text-shadow: 0 0 20px rgba(201,168,76,0.6), 0 0 60px rgba(201,168,76,0.25);
+}
+.text-glow-white {
+  text-shadow: 0 0 20px rgba(255,255,255,0.4), 0 0 60px rgba(255,255,255,0.15);
+}
+.text-glow-red {
+  text-shadow: 0 0 20px rgba(204,17,17,0.7), 0 0 60px rgba(204,17,17,0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DECORATIVE RULE
+   ═══════════════════════════════════════════════════════════ */
+.rule-gold {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
-
-.rule-red::before,
-.rule-red::after {
+.rule-gold::before,
+.rule-gold::after {
   content: '';
   flex: 1;
   height: 1px;
-  background: #991b1b;
-  opacity: 0.6;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
 }
 
-/* ─── Map container ─────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   SECTION DIVIDER (flame / ornamental)
+   ═══════════════════════════════════════════════════════════ */
+.section-divider {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.35) 30%, rgba(201,168,76,0.35) 70%, transparent 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ANIMATED PARTICLES CANVAS (CSS-only, using pseudo elements)
+   ═══════════════════════════════════════════════════════════ */
+.particle-field {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TIMELINE
+   ═══════════════════════════════════════════════════════════ */
+.timeline-line {
+  background: linear-gradient(to bottom,
+    transparent 0%,
+    rgba(201,168,76,0.4) 15%,
+    rgba(201,168,76,0.4) 85%,
+    transparent 100%
+  );
+}
+
+.timeline-dot {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EVENT CARDS
+   ═══════════════════════════════════════════════════════════ */
+.event-card {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.event-card:hover {
+  transform: translateX(6px) translateY(-1px);
+}
+
+.event-card.active {
+  transform: translateX(8px) translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MAP CONTAINER
+   ═══════════════════════════════════════════════════════════ */
 .map-wrapper svg {
   display: block;
   width: 100%;
   height: 100%;
 }
 
-/* ─── Marker pulse ring (SVG) ───────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   MARKER ANIMATIONS
+   ═══════════════════════════════════════════════════════════ */
 .pulse-ring {
   transform-box: fill-box;
   transform-origin: center;
-  animation: pulseRing 2s ease-out infinite;
+  animation: pulseRing 2.2s ease-out infinite;
 }
 
 @keyframes pulseRing {
-  0%   { transform: scale(1); opacity: 0.75; }
-  100% { transform: scale(2.8); opacity: 0; }
+  0%   { transform: scale(1);   opacity: 0.9; }
+  100% { transform: scale(3.2); opacity: 0; }
 }
 
-/* ─── Scroll column ─────────────────────────────────────── */
+.pulse-ring-2 {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulseRing 2.2s ease-out infinite 0.7s;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLL REGION
+   ═══════════════════════════════════════════════════════════ */
 .scroll-col {
   scrollbar-width: thin;
-  scrollbar-color: #991b1b #f2ecd8;
+  scrollbar-color: var(--gold-dim) rgba(0,0,0,0.2);
+}
+.scroll-col::-webkit-scrollbar { width: 3px; }
+.scroll-col::-webkit-scrollbar-track { background: transparent; }
+.scroll-col::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+
+/* ═══════════════════════════════════════════════════════════
+   KEYFRAME ANIMATIONS
+   ═══════════════════════════════════════════════════════════ */
+
+/* Fade up */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.scroll-col::-webkit-scrollbar {
-  width: 4px;
+/* Fade in */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-.scroll-col::-webkit-scrollbar-track {
-  background: #f2ecd8;
+/* Float gentle */
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
 }
 
-.scroll-col::-webkit-scrollbar-thumb {
-  background: #991b1b;
-  border-radius: 2px;
+/* Shimmer sweep */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }
 
-/* ─── Stagger helpers ───────────────────────────────────── */
-.delay-100 { animation-delay: 0.1s; }
-.delay-200 { animation-delay: 0.2s; }
-.delay-300 { animation-delay: 0.3s; }
-.delay-500 { animation-delay: 0.5s; }
-.delay-700 { animation-delay: 0.7s; }
-.delay-900 { animation-delay: 0.9s; }
+/* Rotating border glow */
+@keyframes rotateBorder {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Scale breath */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50%       { transform: scale(1.05); opacity: 1; }
+}
+
+/* Ember float */
+@keyframes emberFloat {
+  0%   { transform: translateY(0) translateX(0) scale(1); opacity: 1; }
+  50%  { transform: translateY(-60px) translateX(10px) scale(0.7); opacity: 0.6; }
+  100% { transform: translateY(-120px) translateX(-5px) scale(0.3); opacity: 0; }
+}
+
+/* Slide up (panel) */
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* Slide in right */
+@keyframes slideInRight {
+  from { transform: translateX(40px); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+/* Expand width (underline) */
+@keyframes expandWidth {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+/* Popup appear */
+@keyframes popupAppear {
+  from { opacity: 0; transform: scale(0.88) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+/* Star twinkle */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.3); }
+}
+
+/* Horizontal scan line */
+@keyframes scanLine {
+  0%   { transform: translateY(-100%); opacity: 0.5; }
+  100% { transform: translateY(100vh); opacity: 0.5; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ANIMATION UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════ */
+.animate-fade-up    { animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-fade-in    { animation: fadeIn 0.6s ease both; }
+.animate-float      { animation: floatY 4s ease-in-out infinite; }
+.animate-breathe    { animation: breathe 3s ease-in-out infinite; }
+.animate-shimmer    {
+  background: linear-gradient(90deg, var(--gold-dim) 0%, var(--gold-light) 50%, var(--gold-dim) 100%);
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Stagger delays */
+.delay-100  { animation-delay: 0.1s; }
+.delay-200  { animation-delay: 0.2s; }
+.delay-300  { animation-delay: 0.3s; }
+.delay-400  { animation-delay: 0.4s; }
+.delay-500  { animation-delay: 0.5s; }
+.delay-600  { animation-delay: 0.6s; }
+.delay-700  { animation-delay: 0.7s; }
+.delay-800  { animation-delay: 0.8s; }
+.delay-900  { animation-delay: 0.9s; }
+.delay-1000 { animation-delay: 1.0s; }
 .delay-1100 { animation-delay: 1.1s; }
+.delay-1300 { animation-delay: 1.3s; }
+.delay-1500 { animation-delay: 1.5s; }
 
-/* Start invisible for animated elements */
+/* Fill mode */
 .animate-fade-up,
 .animate-fade-in {
   opacity: 0;
 }
 
-/* ─── Card hover ────────────────────────────────────────── */
-.event-card {
-  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
-}
+/* ═══════════════════════════════════════════════════════════
+   DETAIL PANEL
+   ═══════════════════════════════════════════════════════════ */
+.detail-slide-up { animation: slideUp  0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+.slide-in-right  { animation: slideInRight 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.popup-appear    { animation: popupAppear  0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; transform-origin: bottom left; }
 
-.event-card:hover {
-  transform: translateX(4px);
-}
-
-/* ─── Geography transitions ─────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   GEOGRAPHY (MAP)
+   ═══════════════════════════════════════════════════════════ */
 .rsm-geography {
-  transition: fill 0.3s ease;
-  outline: none;
+  transition: fill 0.35s ease, filter 0.35s ease;
+  outline: none !important;
 }
 
-/* ─── Detail panel slide-up animation ──────────────────── */
-/*
- * The detail panel slides up from the map bottom when a location is selected.
- * `key={location.id}` on the React element ensures the animation re-runs
- * every time a different location is chosen.
- */
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+/* ═══════════════════════════════════════════════════════════
+   STAR FIELD (decorative bg)
+   ═══════════════════════════════════════════════════════════ */
+.star-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-.detail-slide-up {
-  animation: slideUp 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  animation: twinkle var(--d, 3s) ease-in-out infinite;
+  animation-delay: var(--dl, 0s);
+  opacity: 0.4;
 }
 
-/* ─── Popup entrance animation ──────────────────────────── */
-/*
- * The popup fades in from slightly below with a gentle overshoot
- * (cubic-bezier with bounce) so it feels tactile without being distracting.
- */
-@keyframes popupAppear {
-  from {
-    opacity: 0;
-    transform: scale(0.93) translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+/* ═══════════════════════════════════════════════════════════
+   EMBER PARTICLES
+   ═══════════════════════════════════════════════════════════ */
+.ember {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold-light) 0%, transparent 70%);
+  animation: emberFloat var(--dur, 3s) ease-out infinite;
+  animation-delay: var(--dl, 0s);
+  pointer-events: none;
 }
 
-.popup-appear {
-  animation: popupAppear 0.24s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-  transform-origin: bottom left; /* grows from the pointer-triangle corner */
+/* ═══════════════════════════════════════════════════════════
+   BUTTON STYLES
+   ═══════════════════════════════════════════════════════════ */
+.btn-gold {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
+  border: 1px solid rgba(201,168,76,0.4);
+  color: var(--gold-light);
+  transition: all 0.3s ease;
 }
+
+.btn-gold::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(201,168,76,0.25), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-gold:hover {
+  border-color: rgba(201,168,76,0.7);
+  box-shadow: 0 0 20px rgba(201,168,76,0.2), 0 0 40px rgba(201,168,76,0.1);
+  transform: translateY(-1px);
+}
+
+.btn-gold:hover::before { opacity: 1; }
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLL INDICATOR
+   ═══════════════════════════════════════════════════════════ */
+.scroll-indicator {
+  width: 24px;
+  height: 40px;
+  border: 1.5px solid rgba(201,168,76,0.5);
+  border-radius: 12px;
+  position: relative;
+}
+
+.scroll-indicator::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 2px;
+  animation: scrollDot 1.8s ease-in-out infinite;
+}
+
+@keyframes scrollDot {
+  0%, 100% { top: 6px; opacity: 1; }
+  80%       { top: 22px; opacity: 0.2; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BADGE STYLES
+   ═══════════════════════════════════════════════════════════ */
+.badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NUMBER COUNTER (large decorative numbers)
+   ═══════════════════════════════════════════════════════════ */
+.deco-number {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(201,168,76,0.15);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HORIZONTAL SCROLLING TIMELINE (mobile)
+   ═══════════════════════════════════════════════════════════ */
+.h-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.h-scroll::-webkit-scrollbar { display: none; }
