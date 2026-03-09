@@ -27,7 +27,7 @@ export default function HeroSection() {
             playsInline
             className="w-full h-full"
             style={{ objectFit: 'cover' }}
-            src="/src/public/vietnam-flag-loop.mp4"
+            src="/vietnam-flag-loop.mp4"
           />
           {/* Soft overlay only inside the video frame */}
           <div
