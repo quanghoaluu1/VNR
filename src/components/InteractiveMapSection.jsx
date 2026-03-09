@@ -11,7 +11,7 @@ import {
 const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json'
 const VIETNAM_ID = '704'
 const DEFAULT_CENTER = [106, 16]
-const DEFAULT_ZOOM   = 1
+const DEFAULT_ZOOM = 1
 
 // ─── Locations ──────────────────────────────────────────────────────────────
 const locations = [
@@ -101,22 +101,22 @@ function useMapSpring(targetCenter, targetZoom) {
   const [display, setDisplay] = useState({ center: targetCenter, zoom: targetZoom })
 
   useEffect(() => {
-    const anim        = animRef.current
-    const [tcx, tcy]  = targetCenter
-    const tz          = targetZoom
+    const anim = animRef.current
+    const [tcx, tcy] = targetCenter
+    const tz = targetZoom
     if (anim.rafId) cancelAnimationFrame(anim.rafId)
     let lastTime = performance.now()
     function step(time) {
-      const dt     = Math.min(time - lastTime, 50)
-      lastTime     = time
+      const dt = Math.min(time - lastTime, 50)
+      lastTime = time
       const factor = 1 - Math.exp(-SPRING_K * dt / 1000)
       anim.cx += (tcx - anim.cx) * factor
       anim.cy += (tcy - anim.cy) * factor
-      anim.z  += (tz  - anim.z)  * factor
+      anim.z += (tz - anim.z) * factor
       const done =
         Math.abs(anim.cx - tcx) < 0.0001 &&
         Math.abs(anim.cy - tcy) < 0.0001 &&
-        Math.abs(anim.z  - tz)  < 0.001
+        Math.abs(anim.z - tz) < 0.001
       if (done) {
         anim.cx = tcx; anim.cy = tcy; anim.z = tz
         setDisplay({ center: [tcx, tcy], zoom: tz })
@@ -173,11 +173,10 @@ function TimelineCard({ location, isActive, onClick, index }) {
 
         {/* Card body */}
         <div
-          className={`flex-1 rounded-xl p-4 border transition-all duration-300 ${
-            isActive
+          className={`flex-1 rounded-xl p-4 border transition-all duration-300 ${isActive
               ? 'border-yellow-500/30 bg-yellow-500/5'
               : 'border-yellow-500/5 bg-white/3 hover:border-yellow-500/15 hover:bg-white/5'
-          }`}
+            }`}
           style={{
             boxShadow: isActive ? '0 0 20px rgba(201,168,76,0.08), inset 0 0 20px rgba(201,168,76,0.03)' : 'none',
           }}
@@ -200,23 +199,20 @@ function TimelineCard({ location, isActive, onClick, index }) {
           </div>
 
           {/* Title */}
-          <h3 className={`font-display text-lg font-bold leading-tight mb-2 transition-colors ${
-            isActive ? 'text-yellow-300' : 'text-stone-200'
-          }`}>
+          <h3 className={`font-display text-lg font-bold leading-tight mb-2 transition-colors ${isActive ? 'text-yellow-300' : 'text-stone-200'
+            }`}>
             {location.title}
           </h3>
 
           {/* Short desc */}
-          <p className={`font-body text-base leading-relaxed transition-colors ${
-            isActive ? 'text-stone-300' : 'text-stone-500'
-          }`}>
+          <p className={`font-body text-base leading-relaxed transition-colors ${isActive ? 'text-stone-300' : 'text-stone-500'
+            }`}>
             {location.short_description}
           </p>
 
           {/* Status */}
-          <p className={`font-ui text-sm mt-2.5 font-semibold tracking-wider transition-colors ${
-            isActive ? 'text-yellow-400' : 'text-stone-600'
-          }`}>
+          <p className={`font-ui text-sm mt-2.5 font-semibold tracking-wider transition-colors ${isActive ? 'text-yellow-400' : 'text-stone-600'
+            }`}>
             {isActive ? '◆ Đang hiển thị' : 'Nhấp để khám phá →'}
           </p>
         </div>
@@ -360,7 +356,7 @@ function MapView({ activeId, mapCenter, mapZoom, onMarkerClick, onZoomIn, onZoom
                     strokeWidth={isVietnam ? 0.8 : 0.3}
                     style={{
                       default: { outline: 'none' },
-                      hover:   { outline: 'none', fill: isVietnam ? '#253D52' : '#141D29' },
+                      hover: { outline: 'none', fill: isVietnam ? '#253D52' : '#141D29' },
                       pressed: { outline: 'none' },
                     }}
                   />
@@ -371,12 +367,12 @@ function MapView({ activeId, mapCenter, mapZoom, onMarkerClick, onZoomIn, onZoom
 
           {locations.map((loc) => {
             const isActive = loc.id === activeId
-            const dotR    = (isActive ? 6 : 4) / displayZoom
-            const glowR   = (isActive ? 10 : 6) / displayZoom
-            const pulseR  = 12 / displayZoom
+            const dotR = (isActive ? 6 : 4) / displayZoom
+            const glowR = (isActive ? 10 : 6) / displayZoom
+            const pulseR = 12 / displayZoom
             const strokeW = 1.5 / displayZoom
-            const textSz  = (isActive ? 16 : 13) / displayZoom
-            const labelY  = -15 / displayZoom
+            const textSz = (isActive ? 16 : 13) / displayZoom
+            const labelY = -15 / displayZoom
 
             return (
               <Marker key={loc.id} coordinates={loc.coordinates}>
@@ -431,8 +427,8 @@ function MapView({ activeId, mapCenter, mapZoom, onMarkerClick, onZoomIn, onZoom
       <div className="absolute right-4 top-4 flex flex-col gap-1.5 z-10">
         {[
           { label: '+', title: 'Phóng to', action: onZoomIn },
-          { label: '−', title: 'Thu nhỏ',  action: onZoomOut },
-          { label: '⟳', title: 'Đặt lại',  action: onZoomReset },
+          { label: '−', title: 'Thu nhỏ', action: onZoomOut },
+          { label: '⟳', title: 'Đặt lại', action: onZoomReset },
         ].map(({ label, title, action }) => (
           <motion.button
             key={label}
@@ -480,9 +476,9 @@ function MapView({ activeId, mapCenter, mapZoom, onMarkerClick, onZoomIn, onZoom
 
 // ─── Main Section ─────────────────────────────────────────────────────────────
 export default function InteractiveMapSection() {
-  const [activeId,  setActiveId]  = useState(null)
+  const [activeId, setActiveId] = useState(null)
   const [mapCenter, setMapCenter] = useState(DEFAULT_CENTER)
-  const [mapZoom,   setMapZoom]   = useState(DEFAULT_ZOOM)
+  const [mapZoom, setMapZoom] = useState(DEFAULT_ZOOM)
 
   const sectionRef = useRef(null)
   const headerInView = useInView(sectionRef, { once: true, margin: '-60px' })
@@ -490,21 +486,21 @@ export default function InteractiveMapSection() {
   const handleSelect = useCallback((id) => {
     setActiveId((prev) => {
       const newId = prev === id ? null : id
-      const loc   = locations.find((l) => l.id === newId)
+      const loc = locations.find((l) => l.id === newId)
       setMapCenter(loc?.coordinates ?? DEFAULT_CENTER)
-      setMapZoom(loc?.zoom          ?? DEFAULT_ZOOM)
+      setMapZoom(loc?.zoom ?? DEFAULT_ZOOM)
       return newId
     })
   }, [])
 
   const activeLocation = locations.find((l) => l.id === activeId) ?? null
 
-  const handleZoomIn    = () => setMapZoom((z) => Math.min(10, z * 1.5))
-  const handleZoomOut   = () => setMapZoom((z) => Math.max(0.5, z / 1.5))
+  const handleZoomIn = () => setMapZoom((z) => Math.min(10, z * 1.5))
+  const handleZoomOut = () => setMapZoom((z) => Math.max(0.5, z / 1.5))
   const handleZoomReset = () => {
     const loc = locations.find((l) => l.id === activeId)
     setMapCenter(loc?.coordinates ?? DEFAULT_CENTER)
-    setMapZoom(loc?.zoom          ?? DEFAULT_ZOOM)
+    setMapZoom(loc?.zoom ?? DEFAULT_ZOOM)
   }
   const handleUserMove = useCallback((center, zoom) => {
     setMapCenter(center)
