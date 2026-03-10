@@ -72,7 +72,7 @@ function LessonCard({ lesson, index }) {
       />
 
       <div
-        className="relative glass rounded-2xl p-7 h-full overflow-hidden transition-transform duration-300 group-hover:-translate-y-1"
+        className="relative glass rounded-2xl p-7 h-full overflow-hidden flex flex-col transition-transform duration-300 group-hover:-translate-y-1"
         style={{ border: `1px solid rgba(${lesson.id === 1 ? '201,168,76' : lesson.id === 2 ? '204,17,17' : '74,158,204'},0.15)` }}
       >
         {/* Decorative large number */}
@@ -119,10 +119,10 @@ function LessonCard({ lesson, index }) {
         <div className="w-10 h-px mb-4" style={{ background: `linear-gradient(to right, ${lesson.color}, transparent)` }} />
 
         {/* Description */}
-        <p className="font-body text-base text-stone-400 leading-relaxed mb-5">
+        <p className="font-body flex-grow text-base text-stone-400 leading-relaxed mb-5">
           {lesson.description}
         </p>
-
+<div className='mt-auto'>
         {/* Stats row */}
         <div className="grid grid-cols-2 gap-3 mb-5">
           {lesson.stats.map((stat, i) => (
@@ -143,7 +143,7 @@ function LessonCard({ lesson, index }) {
             {lesson.quote}
           </p>
         </blockquote>
-
+        </div>
         {/* Bottom scan line animation */}
         <div
           className="absolute bottom-0 left-0 right-0 h-0.5 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"
