@@ -91,6 +91,18 @@ const locations = [
       { v: '49', l: 'Cứ điểm bị phá hủy' },
     ],
   },
+  {
+    id: 5,
+    title: 'Hoàng Sa',
+    coordinates: [112.0, 16.5], 
+    isNonInteractive: true,
+  },
+  {
+    id: 6,
+    title: 'Trường Sa',
+    coordinates: [115.0, 9.5],
+    isNonInteractive: true,
+  }
 ]
 
 // ─── Spring hook ─────────────────────────────────────────────────────────────
@@ -343,7 +355,7 @@ function MapView({ activeId, mapCenter, mapZoom, onMarkerClick, onZoomIn, onZoom
           filterZoomEvent={(e) => e.type !== 'wheel'}
           transitionDuration={0}
         >
-          <Geographies geography={GEO_URL}>
+          <Geographies geography={"/vn_geo.json"}>
             {({ geographies }) =>
               geographies.map((geo) => {
                 const isVietnam = String(geo.id) === VIETNAM_ID
@@ -377,7 +389,9 @@ function MapView({ activeId, mapCenter, mapZoom, onMarkerClick, onZoomIn, onZoom
             return (
               <Marker key={loc.id} coordinates={loc.coordinates}>
                 {/* Double pulse ring for active */}
-                {isActive && (
+                {!loc.isNonInteractive && (
+                  <>
+                  {isActive && (
                   <>
                     <circle r={pulseR} fill="none" stroke={loc.badgeColor} strokeWidth={strokeW} className="pulse-ring" />
                     <circle r={pulseR * 0.7} fill="none" stroke={loc.badgeColor} strokeWidth={strokeW * 0.7} className="pulse-ring-2" />
@@ -401,11 +415,14 @@ function MapView({ activeId, mapCenter, mapZoom, onMarkerClick, onZoomIn, onZoom
                   style={{ cursor: 'pointer', transition: 'fill 0.35s ease, r 0.35s ease' }}
                   onClick={(e) => { e.stopPropagation(); onMarkerClick(loc.id) }}
                 />
+                  </>
+                )}
+                
 
                 {/* Label */}
                 <text
                   textAnchor="middle"
-                  y={labelY}
+                  y={loc.isNonInteractive ? 0 : labelY}
                   style={{
                     fontFamily: "'Inter', sans-serif",
                     fontSize: textSz,
