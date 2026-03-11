@@ -1,6 +1,7 @@
 import HeroSection from './components/HeroSection'
 import InteractiveMapSection from './components/InteractiveMapSection'
 import ProgressSection from './components/ProgressSection'
+import GeneveSection from './components/GeneveSection'
 import LessonsSection from './components/LessonsSection'
 import Footer from './components/Footer'
 
@@ -10,6 +11,7 @@ export default function App() {
       <HeroSection />
       <InteractiveMapSection />
       <ProgressSection />
+      <GeneveSection />
       <LessonsSection />
       <Footer />
     </div>

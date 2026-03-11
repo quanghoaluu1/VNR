@@ -586,7 +586,7 @@ export default function InteractiveMapSection() {
               <p className="font-ui text-[10px] tracking-[0.3em] uppercase text-yellow-600/60 whitespace-nowrap font-semibold">
                 Các mốc sự kiện
               </p>
-              <div className="h-px flex-1" style={{ background: 'linear-gradient(to left, transparent, rgba(201,168,76,0.3))' }} />
+              <div className="h-px flex-1" style={{ background: 'linear-sựgradient(to left, transparent, rgba(201,168,76,0.3))' }} />
             </div>
 
             {/* Timeline items */}
@@ -599,6 +599,7 @@ export default function InteractiveMapSection() {
 
               <div className="space-y-4">
                 {locations.map((loc, i) => (
+                  !loc.isNonInteractive && (
                   <TimelineCard
                     key={loc.id}
                     location={loc}
@@ -606,6 +607,7 @@ export default function InteractiveMapSection() {
                     onClick={() => handleSelect(loc.id)}
                     index={i}
                   />
+                  )
                 ))}
               </div>
             </div>
